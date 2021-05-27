@@ -1,12 +1,31 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import Editor from '@monaco-editor/react'
 
 const Command = ({ execCommand }) => {
-    var textareaRef = useRef();
+    const [editorReady, setEditorReady] = useState(false);
+    const editorRef = useRef(null);
 
-    const runCommand = () => {
-        const command = textareaRef.current.value;
+    const editorOptions = {
+        minimap: {
+            enabled: false
+        },
+        renderLineHighlight: "none",
+        lineNumbers: "off"
+    };
 
-        execCommand(command);
+    const handleRunButtonClick = () => {
+        if (!editorReady)
+            return;
+
+        const sql = (editorRef.current.getValue() || '').trim();
+
+        if (sql)
+            execCommand(sql);
+    };
+
+    const handleEditorMount = (editor) => {
+        editorRef.current = editor;
+        setEditorReady(true);
     };
 
     return (
@@ -16,11 +35,18 @@ const Command = ({ execCommand }) => {
             </div>
 
             <div className="card-body">
-                <textarea ref={textareaRef} className="form-control mb-3"></textarea>
+                <Editor
+                    className="form-control mb-3"
+                    defaultLanguage="sql"
+                    height="150px"
+                    options={editorOptions}
+                    onMount={handleEditorMount} />
 
-                <button type="button" className="btn btn-primary" onClick={runCommand}>
-                    Run Command
-                </button>
+                {editorReady && (
+                    <button type="button" className="btn btn-primary" onClick={handleRunButtonClick}>
+                        Run Command
+                    </button>
+                )}
             </div>
         </div>
     );
