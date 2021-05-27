@@ -5,7 +5,7 @@ const GET_SCHEMA_SQL = "select name from sqlite_master where type = 'table' and 
 const Schema = ({ execCommand }) => {
     const [schema, setSchema] = useState(null);
 
-    useEffect(() => {
+    const loadSchema = () => {
         const onEvent = (event) => {
             var results = event.data.results;
 
@@ -19,15 +19,18 @@ const Schema = ({ execCommand }) => {
         };
 
         execCommand(GET_SCHEMA_SQL, onEvent);
-    }, []);
+    };
+
+    // eslint-disable-next-line
+    useEffect(loadSchema, []);
 
     if (!schema)
         return null;
 
     return (
         <div className="card mb-4 shadow-sm">
-            <div className="card-header bg-primary bg-gradient text-light fw-bold">
-                Schema
+            <div className="card-header bg-primary bg-gradient text-light fw-bold" onClick={loadSchema}>
+                Tables
             </div>
 
             <ul className="list-group list-group-flush">

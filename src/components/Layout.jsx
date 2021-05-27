@@ -1,17 +1,27 @@
 
-const Layout = ({ topBar, sideBar, children }) => (
+const Layout = ({ sideBar, children }) => (
     <div className="container my-3">
-        {topBar}
+        <h1 className="display-6 pb-2 mb-4 border-bottom">SQLite Viewer</h1>
 
-        <div className="row">
-            <div className="col-md-4">
-                {sideBar}
+        {!sideBar && (
+            <div className="row justify-content-center">
+                <div className="col-md-6">
+                    {children}
+                </div>
             </div>
+        )}
 
-            <div className="col">
-                {children}
+        {sideBar && (
+            <div className="row">
+                <div className="col-md-3">
+                    {sideBar}
+                </div>
+
+                <div className="col-md-9">
+                    {children}
+                </div>
             </div>
-        </div>
+        )}
     </div>
 );
 

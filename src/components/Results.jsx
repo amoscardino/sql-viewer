@@ -9,28 +9,36 @@ const Results = ({ results }) => {
                 Results
             </div>
 
-            {results && results.map((result, i) => (
-                <table key={i} className="table">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            {result.columns.map(column => <th key={column}>{column}</th>)}
-                        </tr>
-                    </thead>
+            {results.length === 0 && (
+                <div className="card-body text-center text-muted fst-italic">
+                    No results
+                </div>
+            )}
 
-                    <tbody>
-                        {result.values.map((row, j) => (
-                            <tr key={`${i},${j}`}>
-                                <td>{j}</td>
-                                {row.map((value, k) => (
-                                    <td key={`${i},${j},${k}`}>
-                                        {value}
-                                    </td>
-                                ))}
+            {results.map((result, i) => (
+                <div key={`r${i}`} className="table-responsive">
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                {result.columns.map((c, j) => <th key={`c${j}`}>{c}</th>)}
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+
+                        <tbody>
+                            {result.values.map((row, j) => (
+                                <tr key={`${i},${j}`}>
+                                    <td>{j}</td>
+                                    {row.map((value, k) => (
+                                        <td key={`${i},${j},${k}`}>
+                                            {value}
+                                        </td>
+                                    ))}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             ))}
         </div>
     );
