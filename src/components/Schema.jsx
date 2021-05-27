@@ -6,19 +6,17 @@ const Schema = ({ execCommand }) => {
     const [schema, setSchema] = useState(null);
 
     const loadSchema = () => {
-        const onEvent = (event) => {
-            var results = event.data.results;
-
+        const handleResults = (results) => {
             if (!results)
                 return;
 
-            setSchema(results[0].values.map(table => ({
-                id: table,
+            setSchema(results[0].values.map((table, i) => ({
+                id: i,
                 name: table
             })));
         };
 
-        execCommand(GET_SCHEMA_SQL, onEvent);
+        execCommand(GET_SCHEMA_SQL, handleResults);
     };
 
     // eslint-disable-next-line

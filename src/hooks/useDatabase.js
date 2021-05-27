@@ -21,12 +21,12 @@ const useDatabase = () => {
         if (!state.isAppReady)
             return;
 
-        setState(prevState => ({ ...prevState, isDbReady: false }));
+        setState(prevState => ({ ...prevState, isAppReady: false, isDbReady: false }));
 
         worker.current.onmessage = () => {
             console.log("Database opened");
 
-            setState(prevState => ({ ...prevState, isDbReady: true }));
+            setState(prevState => ({ ...prevState, isAppReady: true, isDbReady: true }));
         };
 
         worker.current.postMessage({
@@ -35,7 +35,7 @@ const useDatabase = () => {
         });
     };
 
-    const execCommand = (command, onEvent) => {
+    const execCommand = (command, handleResults) => {
         if (state.isRunningCommand)
             return;
 
@@ -43,8 +43,8 @@ const useDatabase = () => {
 
         worker.current.onmessage = (event) => {
             setState(prevState => ({ ...prevState, isRunningCommand: false }));
-            console.log(event);
-            onEvent(event);
+            console.log(event.data.results);
+            handleResults(event.data.results);
         };
 
         console.log(`Running sql: ${command}`);

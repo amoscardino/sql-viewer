@@ -12,35 +12,35 @@ const App = () => {
     const [results, setResults] = useState(null);
 
     const onExecCommand = (command) => {
-        execCommand(command, (event) => {
-            setResults(event.data.results)
-        });
+        const handleResults = (results) => {
+            setResults(results)
+        };
+
+        execCommand(command, handleResults);
     };
 
-    if (!isAppReady) {
+    if (isAppReady && isDbReady) {
         return (
-            <Layout>
-                <div className="d-flex justify-content-center align-items-center vh-100">
-                    <div className="spinner-border" role="status">
-                        <span className="visually-hidden">Loading...</span>
-                    </div>
-                </div>
+            <Layout sideBar={<Schema execCommand={execCommand} />}>
+                <Command execCommand={onExecCommand} />
+                <Results results={results} />
             </Layout>
         );
     }
 
-    if (!isDbReady) {
-        return (
-            <Layout>
-                <FilePicker loadDatabase={loadDatabase} />
-            </Layout>
-        )
-    }
-
     return (
-        <Layout sideBar={<Schema execCommand={execCommand} />}>
-            <Command execCommand={onExecCommand} />
-            <Results results={results} />
+        <Layout>
+            {!isAppReady && (
+                <div className="d-flex justify-content-center m-5">
+                    <div className="spinner-border">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            )}
+
+            {isAppReady && !isDbReady && (
+                <FilePicker loadDatabase={loadDatabase} />
+            )}
         </Layout>
     );
 }
