@@ -1,39 +1,19 @@
-import { useRef } from "react";
-import Editor from '@monaco-editor/react'
+import { useState } from "react";
+import CommandEditor from "./CommandEditor";
+import Results from "./Results";
 
 const Command = ({ execCommand }) => {
-    const editorRef = useRef(null);
-    const editorOptions = {
-        minimap: {
-            enabled: false
-        },
-        renderLineHighlight: "none",
-        renderWhitespace: "all",
-        lineNumbers: "off"
+    const [results, setResults] = useState(null);
+
+    const handleRunCommand = (command) => {
+        execCommand(command, setResults)
     };
 
-    const handleRunButtonClick = () => execCommand((editorRef.current.getValue() || '').trim());
-    const handleEditorMount = (editor) => editorRef.current = editor;
-
     return (
-        <div className="card mb-4 shadow-sm">
-            <div className="card-header bg-primary bg-gradient text-light fw-bold">
-                Command
-            </div>
-
-            <div className="card-body">
-                <Editor
-                    className="form-control mb-3"
-                    defaultLanguage="sql"
-                    height="150px"
-                    options={editorOptions}
-                    onMount={handleEditorMount} />
-
-                <button type="button" className="btn btn-primary" onClick={handleRunButtonClick}>
-                    Run Command
-                    </button>
-            </div>
-        </div>
+        <>
+            <CommandEditor runCommand={handleRunCommand} />
+            <Results results={results} />
+        </>
     );
 };
 

@@ -13,13 +13,7 @@ const useSchema = (execCommand) => {
                 columns: results[table.id].values.map(row => {
                     const [id, name, type, isNull, isPrimaryKey] = row;
 
-                    return {
-                        id,
-                        name,
-                        type,
-                        isNull,
-                        isPrimaryKey
-                    }
+                    return { id, name, type, isNull, isPrimaryKey }
                 })
             };
         }))

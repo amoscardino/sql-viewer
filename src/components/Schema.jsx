@@ -42,7 +42,7 @@ const Schema = ({ execCommand }) => {
                                 )}
 
                                 {table.columns.length > 0 && (
-                                    <table class="table table-sm font-monospace small">
+                                    <table className="table table-sm font-monospace small">
                                         <tbody>
                                             {table.columns.map(column => (
                                                 <tr key={`table-${table.id}-column-${column.id}`}>

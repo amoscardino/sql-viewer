@@ -1,66 +1,119 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
-const useDatabase = () => {
+export const DATABASE_STATE = {
+    busy: 'busy',
+    notLoaded: 'not loaded',
+    ready: 'ready',
+    runningCommand: 'running command'
+};
+
+export const useDatabase = () => {
     const worker = useRef(null);
-    const [state, setState] = useState({
-        isAppReady: false,
-        isDbReady: false,
-        isRunningCommand: false
-    });
+    const [databaseState, setDatabaseState] = useState(DATABASE_STATE.busy);
+    const isDev = process.env.NODE_ENV === 'development';
 
     useEffect(() => {
-        let sqlWorker = new Worker("/worker.sql-wasm.js");
+        let sqlWorker = new Worker('/worker.sql-wasm.js');
 
-        sqlWorker.onerror = (err) => console.log(`SQL Worker Error: ${err}`);
+        if (isDev)
+            sqlWorker.onerror = (err) => console.log(`SQL Worker Error: ${err}`);
 
         worker.current = sqlWorker;
-        setState(prevState => ({ ...prevState, isAppReady: true }));
-    }, []);
+        setDatabaseState(DATABASE_STATE.notLoaded);
+    }, [isDev]);
 
-    const loadDatabase = (data) => {
-        if (!state.isAppReady)
+    const loadDatabase = useCallback((data) => {
+        if (databaseState === DATABASE_STATE.busy)
             return;
 
-        setState(prevState => ({ ...prevState, isAppReady: false, isDbReady: false }));
+        setDatabaseState(DATABASE_STATE.busy);
 
         worker.current.onmessage = () => {
-            console.log("Database opened");
+            if (isDev)
+                console.log('Database opened');
 
-            setState(prevState => ({ ...prevState, isAppReady: true, isDbReady: true }));
+            setDatabaseState(DATABASE_STATE.ready);
         };
 
-        worker.current.postMessage({
-            action: "open",
-            buffer: data
-        });
-    };
+        if (data && data.length) {
+            console.log('Opening database from file');
+            worker.current.postMessage({
+                action: 'open',
+                buffer: data
+            });
+        }
+        else{
+            console.log('Opening blank database');
+            worker.current.postMessage({ action: 'open' });
+        }
+    }, [databaseState, isDev]);
 
-    const execCommand = (command, handleResults) => {
-        if (state.isRunningCommand)
+    const execCommand = useCallback((command, handleResults) => {
+        if (databaseState === DATABASE_STATE.busy || databaseState === DATABASE_STATE.runningCommand)
             return;
 
-        setState(prevState => ({ ...prevState, isRunningCommand: true }));
+        setDatabaseState(DATABASE_STATE.runningCommand);
 
         worker.current.onmessage = (event) => {
-            setState(prevState => ({ ...prevState, isRunningCommand: false }));
-            console.log(event.data.results);
+            if (isDev)
+                console.log(event.data.results);
+
+            setDatabaseState(DATABASE_STATE.ready);
             handleResults(event.data.results);
         };
 
-        console.log(`Running sql: ${command}`);
+        if (isDev)
+            console.log(`Running sql: ${command}`);
 
         worker.current.postMessage({
             action: 'exec',
             sql: command
         });
-    };
+    }, [databaseState, isDev]);
+
+    const exportDatabase = useCallback((handleBuffer) => {
+        if (databaseState === DATABASE_STATE.busy || databaseState === DATABASE_STATE.runningCommand)
+            return;
+
+        setDatabaseState(DATABASE_STATE.runningCommand);
+
+        worker.current.onmessage = (event) => {
+            if (isDev)
+                console.log(event.data.buffer);
+
+            setDatabaseState(DATABASE_STATE.ready);
+            handleBuffer(event.data.buffer);
+        };
+
+        if (isDev)
+            console.log('Exporting database');
+
+        worker.current.postMessage({ action: 'export' });
+    }, [databaseState, isDev]);
+
+    const closeDatabase = useCallback(() => {
+        if (databaseState === DATABASE_STATE.busy || databaseState === DATABASE_STATE.runningCommand)
+            return;
+
+        setDatabaseState(DATABASE_STATE.busy);
+
+        worker.current.onmessage = () => {
+            setDatabaseState(DATABASE_STATE.notLoaded);
+
+            if (isDev)
+                console.log('Database closed');
+        };
+
+        worker.current.postMessage({
+            action: 'close'
+        });
+    }, [databaseState, isDev]);
 
     return {
-        isAppReady: state.isAppReady,
-        isDbReady: state.isDbReady,
+        databaseState,
+        loadDatabase,
         execCommand,
-        loadDatabase
+        exportDatabase,
+        closeDatabase
     }
 };
-
-export default useDatabase;

@@ -1,42 +1,39 @@
-import Layout from './Layout';
+import { useDatabase, DATABASE_STATE } from '../hooks/useDatabase'
+import Loader from './Loader'
 import DatabaseSelector from './DatabaseSelector'
 import Schema from './Schema'
 import Command from './Command'
-import Results from './Results'
-
-import useDatabase from '../hooks/useDatabase'
-import { useState } from 'react';
+import Controls from './Controls';
 
 const App = () => {
-    const { isAppReady, isDbReady, execCommand, loadDatabase } = useDatabase();
-    const [results, setResults] = useState(null);
+    const { databaseState, loadDatabase, execCommand, closeDatabase, exportDatabase } = useDatabase();
 
-    const handleExecCommand = (command) => execCommand(command, (results) => setResults(results));
+    switch (databaseState) {
+        case DATABASE_STATE.busy:
+            return <Loader />
 
-    if (isAppReady && isDbReady) {
-        return (
-            <Layout sideBar={<Schema execCommand={execCommand} />}>
-                <Command execCommand={handleExecCommand} />
-                <Results results={results} />
-            </Layout>
-        );
-    }
+        case DATABASE_STATE.notLoaded:
+            return <DatabaseSelector loadDatabase={loadDatabase} />
 
-    return (
-        <Layout>
-            {!isAppReady && (
-                <div className="d-flex justify-content-center m-5">
-                    <div className="spinner-border">
-                        <span className="visually-hidden">Loading...</span>
+        case DATABASE_STATE.ready:
+        case DATABASE_STATE.runningCommand:
+        default:
+            return (
+                <>
+                    <Controls closeDatabase={closeDatabase} exportDatabase={exportDatabase} />
+
+                    <div className="row">
+                        <div className="col-md-3">
+                            <Schema execCommand={execCommand} />
+                        </div>
+
+                        <div className="col-md-9">
+                            <Command execCommand={execCommand} />
+                        </div>
                     </div>
-                </div>
-            )}
-
-            {isAppReady && !isDbReady && (
-                <DatabaseSelector loadDatabase={loadDatabase} />
-            )}
-        </Layout>
-    );
+                </>
+            );
+    }
 };
 
 export default App;
