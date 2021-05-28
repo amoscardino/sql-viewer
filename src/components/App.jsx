@@ -1,5 +1,5 @@
 import Layout from './Layout';
-import FilePicker from './FilePicker'
+import DatabaseSelector from './DatabaseSelector'
 import Schema from './Schema'
 import Command from './Command'
 import Results from './Results'
@@ -11,18 +11,12 @@ const App = () => {
     const { isAppReady, isDbReady, execCommand, loadDatabase } = useDatabase();
     const [results, setResults] = useState(null);
 
-    const onExecCommand = (command) => {
-        const handleResults = (results) => {
-            setResults(results)
-        };
-
-        execCommand(command, handleResults);
-    };
+    const handleExecCommand = (command) => execCommand(command, (results) => setResults(results));
 
     if (isAppReady && isDbReady) {
         return (
             <Layout sideBar={<Schema execCommand={execCommand} />}>
-                <Command execCommand={onExecCommand} />
+                <Command execCommand={handleExecCommand} />
                 <Results results={results} />
             </Layout>
         );
@@ -39,10 +33,10 @@ const App = () => {
             )}
 
             {isAppReady && !isDbReady && (
-                <FilePicker loadDatabase={loadDatabase} />
+                <DatabaseSelector loadDatabase={loadDatabase} />
             )}
         </Layout>
     );
-}
+};
 
 export default App;

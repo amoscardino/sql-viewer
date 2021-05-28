@@ -1,32 +1,19 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Editor from '@monaco-editor/react'
 
 const Command = ({ execCommand }) => {
-    const [editorReady, setEditorReady] = useState(false);
     const editorRef = useRef(null);
-
     const editorOptions = {
         minimap: {
             enabled: false
         },
         renderLineHighlight: "none",
+        renderWhitespace: "all",
         lineNumbers: "off"
     };
 
-    const handleRunButtonClick = () => {
-        if (!editorReady)
-            return;
-
-        const sql = (editorRef.current.getValue() || '').trim();
-
-        if (sql)
-            execCommand(sql);
-    };
-
-    const handleEditorMount = (editor) => {
-        editorRef.current = editor;
-        setEditorReady(true);
-    };
+    const handleRunButtonClick = () => execCommand((editorRef.current.getValue() || '').trim());
+    const handleEditorMount = (editor) => editorRef.current = editor;
 
     return (
         <div className="card mb-4 shadow-sm">
@@ -42,11 +29,9 @@ const Command = ({ execCommand }) => {
                     options={editorOptions}
                     onMount={handleEditorMount} />
 
-                {editorReady && (
-                    <button type="button" className="btn btn-primary" onClick={handleRunButtonClick}>
-                        Run Command
+                <button type="button" className="btn btn-primary" onClick={handleRunButtonClick}>
+                    Run Command
                     </button>
-                )}
             </div>
         </div>
     );

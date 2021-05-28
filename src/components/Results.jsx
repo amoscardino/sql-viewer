@@ -17,7 +17,7 @@ const Results = ({ results }) => {
 
             {results.map((result, i) => (
                 <div key={`r${i}`} className="table-responsive">
-                    <table className="table">
+                    <table className="table table-sm font-monospace small">
                         <thead>
                             <tr>
                                 <th></th>
