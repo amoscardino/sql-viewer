@@ -1,12 +1,12 @@
 import useSchema from '../hooks/useSchema';
-import Card from "./utils/Card";
-import IconText from "./utils/IconText";
+import Card from './utils/Card';
+import IconText from './utils/IconText';
 
 const Schema = ({ execCommand }) => {
-    const { schema, loadSchema } = useSchema(execCommand);
+    const { schema, reloadSchema } = useSchema(execCommand);
 
     return (
-        <Card title={<IconText iconClass="table" text="Tables" />} >
+        <Card title={<IconText iconClass="table" text="Tables" />}>
             {!schema && (
                 <div className="card-body text-center text-muted fst-italic">
                     No tables. Why not add some?
@@ -63,7 +63,7 @@ const Schema = ({ execCommand }) => {
             )}
 
             <div className="card-footer d-flex justify-content-end">
-                <button type="button" className="btn btn-secondary btn-sm" onClick={loadSchema}>
+                <button type="button" className="btn btn-secondary btn-sm" onClick={reloadSchema}>
                     <IconText iconClass="arrow-repeat" text="Reload Tables" textBeforeIcon={true} />
                 </button>
             </div>

@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef } from 'react';
 import Editor from '@monaco-editor/react'
 import IconText from "./utils/IconText";
 import Card from "./utils/Card";
@@ -9,9 +9,9 @@ const CommandEditor = ({ runCommand }) => {
         minimap: {
             enabled: false
         },
-        renderLineHighlight: "none",
-        renderWhitespace: "all",
-        lineNumbers: "off"
+        renderLineHighlight: 'none',
+        renderWhitespace: 'all',
+        lineNumbers: 'off'
     };
 
     const handleRunButtonClick = () => runCommand((editorRef.current.getValue() || '').trim());

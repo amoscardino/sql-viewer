@@ -36,14 +36,18 @@ export const useDatabase = () => {
         };
 
         if (data && data.length) {
-            console.log('Opening database from file');
+            if (isDev)
+                console.log('Opening database from file');
+
             worker.current.postMessage({
                 action: 'open',
                 buffer: data
             });
         }
-        else{
-            console.log('Opening blank database');
+        else {
+            if (isDev)
+                console.log('Opening blank database');
+
             worker.current.postMessage({ action: 'open' });
         }
     }, [databaseState, isDev]);

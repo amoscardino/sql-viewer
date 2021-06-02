@@ -1,5 +1,5 @@
-import Card from "./utils/Card";
-import IconText from "./utils/IconText";
+import Card from './utils/Card';
+import IconText from './utils/IconText';
 
 const Results = ({ results }) => {
     if (!results)

@@ -1,19 +1,21 @@
-import IconText from "./utils/IconText";
+import IconText from './utils/IconText';
 
 const Controls = ({ closeDatabase, exportDatabase }) => {
     const handleExportClick = () => {
         exportDatabase((buffer) => {
             const blob = new Blob([buffer]);
+            const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
 
-            document.body.appendChild(a);
-            a.href = window.URL.createObjectURL(blob);
+            a.href = url;
             a.download = 'sql.db';
             a.onclick = () => {
                 setTimeout(() => {
-                    window.URL.revokeObjectURL(a.href);
-                }, 1500);
+                    window.URL.revokeObjectURL(url);
+                }, 2000);
             };
+            
+            document.body.appendChild(a);
             a.click();
             a.remove();
         });

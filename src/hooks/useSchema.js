@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-const GET_TABLES_SQL = "select name from sqlite_master where type = 'table' and name not like 'sqlite_%' order by name";
+const GET_TABLES_SQL = "select name from sqlite_master where type = 'table' and name not like 'sqlite_%' order by name;";
 const GET_COLUMNS_SQL = "select * from pragma_table_info('{table}');";
 
 const useSchema = (execCommand) => {
@@ -43,7 +43,7 @@ const useSchema = (execCommand) => {
     // eslint-disable-next-line
     useEffect(loadSchema, []);
 
-    return { schema, loadSchema };
+    return { schema, reloadSchema: loadSchema };
 };
 
 export default useSchema;

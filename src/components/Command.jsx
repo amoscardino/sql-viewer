@@ -1,17 +1,13 @@
-import { useState } from "react";
-import CommandEditor from "./CommandEditor";
-import Results from "./Results";
+import useResults from '../hooks/useResults';
+import CommandEditor from './CommandEditor';
+import Results from './Results';
 
 const Command = ({ execCommand }) => {
-    const [results, setResults] = useState(null);
-
-    const handleRunCommand = (command) => {
-        execCommand(command, setResults)
-    };
+    const { results, runCommand } = useResults(execCommand);
 
     return (
         <>
-            <CommandEditor runCommand={handleRunCommand} />
+            <CommandEditor runCommand={runCommand} />
             <Results results={results} />
         </>
     );
