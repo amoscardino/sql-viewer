@@ -2,6 +2,6 @@
     X-Frame-Options: DENY
     X-Content-Type-Options: nosniff
     X-XSS-Protection: 1; mode=block
-    Content-Security-Policy: default-src https: 'unsafe-inline' 'unsafe-eval';
+    Content-Security-Policy: default-src https: blob: 'unsafe-inline' 'unsafe-eval';
     X-Clacks-Overhead: GNU Terry Pratchett
     Permissions-Policy: interest-cohort=()
