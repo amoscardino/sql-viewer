@@ -1,5 +1,7 @@
 import { useRef } from "react";
 import Editor from '@monaco-editor/react'
+import IconText from "./utils/IconText";
+import Card from "./utils/Card";
 
 const CommandEditor = ({ runCommand }) => {
     const editorRef = useRef(null);
@@ -16,24 +18,21 @@ const CommandEditor = ({ runCommand }) => {
     const handleEditorMount = (editor) => editorRef.current = editor;
 
     return (
-        <div className="card mb-4 shadow-sm">
-            <div className="card-header bg-primary bg-gradient text-light fw-bold">
-                Command
-            </div>
+        <Card
+            title={<IconText iconClass="input-cursor-text" text="Command" />}
+            useCardBody={true}
+        >
+            <Editor
+                className="form-control mb-3"
+                defaultLanguage="sql"
+                height="150px"
+                options={editorOptions}
+                onMount={handleEditorMount} />
 
-            <div className="card-body">
-                <Editor
-                    className="form-control mb-3"
-                    defaultLanguage="sql"
-                    height="150px"
-                    options={editorOptions}
-                    onMount={handleEditorMount} />
-
-                <button type="button" className="btn btn-primary" onClick={handleRunButtonClick}>
-                    Run Command
-                    </button>
-            </div>
-        </div>
+            <button type="button" className="btn btn-primary" onClick={handleRunButtonClick}>
+                <IconText iconClass="play" text="Run Command" textBeforeIcon={true} />
+            </button>
+        </Card>
     );
 };
 

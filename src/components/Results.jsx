@@ -1,14 +1,15 @@
+import Card from "./utils/Card";
+import IconText from "./utils/IconText";
 
 const Results = ({ results }) => {
     if (!results)
         return null;
 
     return (
-        <div className="card mb-4 shadow-sm">
-            <div className="card-header bg-secondary bg-gradient text-light fw-bold">
-                Results
-            </div>
-
+        <Card
+            headerBg="bg-secondary"
+            title={<IconText className="terminal" text="Results" />}
+        >
             {results.length === 0 && (
                 <div className="card-body text-center text-muted fst-italic">
                     No results
@@ -40,7 +41,7 @@ const Results = ({ results }) => {
                     </table>
                 </div>
             ))}
-        </div>
+        </Card>
     );
 };
 
