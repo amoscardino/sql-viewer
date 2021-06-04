@@ -11,3 +11,10 @@ Clone the repo then run `npm install` to get everything set up.
 
 - For a live development build: `npm run start`.
 - For a production build: `npm run build`.
+
+## Built with
+
+- [ReactJS](https://reactjs.org)
+- [SQL.js](https://sql.js.org)
+- [Monaco Editor](https://microsoft.github.io/monaco-editor/)
+  - [monaco-react](https://github.com/suren-atoyan/monaco-react#readme)
