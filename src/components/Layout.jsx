@@ -12,7 +12,7 @@ const Layout = ({ children }) => (
         </main>
 
         <footer className="pt-2 mt-3 border-top text-center text-muted">
-            © {new Date().getFullYear()} Andrew Moscardino ・ <a href="https://moscardino.net">moscardino.net</a>
+            © {new Date().getFullYear()} <a href="https://moscardino.net">Andrew Moscardino</a> ・ <a href="https://github.com/amoscardino/sql-viewer">GitHub</a>
         </footer>
     </div>
 );
