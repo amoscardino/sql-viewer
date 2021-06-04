@@ -4,7 +4,9 @@ const useResults = (execCommand) => {
     const [results, setResults] = useState(null);
 
     const runCommand = (command) => {
-        execCommand(command, setResults);
+        execCommand(command, (data) => {
+            setResults(data)
+        });
     };
 
     return { results, runCommand };

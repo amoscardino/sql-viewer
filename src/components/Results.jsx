@@ -22,6 +22,7 @@ const Results = ({ results }) => {
                         <thead>
                             <tr>
                                 <th></th>
+
                                 {result.columns.map((c, j) => <th key={`c${j}`}>{c}</th>)}
                             </tr>
                         </thead>
@@ -30,6 +31,7 @@ const Results = ({ results }) => {
                             {result.values.map((row, j) => (
                                 <tr key={`${i},${j}`}>
                                     <td>{j}</td>
+
                                     {row.map((value, k) => (
                                         <td key={`${i},${j},${k}`}>
                                             {value}

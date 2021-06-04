@@ -1,4 +1,4 @@
-import { useDatabase, DATABASE_STATE } from '../hooks/useDatabase'
+import { useDatabase, DATABASE_STATUS } from '../hooks/useDatabase'
 import Loader from './Loader'
 import DatabaseSelector from './DatabaseSelector'
 import Schema from './Schema'
@@ -6,17 +6,17 @@ import Command from './Command'
 import Controls from './Controls';
 
 const App = () => {
-    const { databaseState, loadDatabase, execCommand, closeDatabase, exportDatabase } = useDatabase();
+    const { databaseStatus, loadDatabase, execCommand, closeDatabase, exportDatabase } = useDatabase();
 
-    switch (databaseState) {
-        case DATABASE_STATE.busy:
+    switch (databaseStatus) {
+        case DATABASE_STATUS.busy:
             return <Loader />
 
-        case DATABASE_STATE.notLoaded:
+        case DATABASE_STATUS.notLoaded:
             return <DatabaseSelector loadDatabase={loadDatabase} />
 
-        case DATABASE_STATE.ready:
-        case DATABASE_STATE.runningCommand:
+        case DATABASE_STATUS.ready:
+        case DATABASE_STATUS.runningCommand:
         default:
             return (
                 <>

@@ -14,8 +14,13 @@ const CommandEditor = ({ runCommand }) => {
         lineNumbers: 'off'
     };
 
-    const handleRunButtonClick = () => runCommand((editorRef.current.getValue() || '').trim());
-    const handleEditorMount = (editor) => editorRef.current = editor;
+    const handleRunButtonClick = () => {
+        runCommand((editorRef.current.getValue() || '').trim())
+    };
+    
+    const handleEditorMount = (editor) => {
+        editorRef.current = editor
+    };
 
     return (
         <Card

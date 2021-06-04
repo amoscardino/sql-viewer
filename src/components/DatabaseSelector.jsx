@@ -45,7 +45,7 @@ const DatabaseSelector = ({ loadDatabase }) => {
                                 onClick={handleButtonClick}
                             >
                                 Use a blank database
-                                </button>
+                            </button>
                         </div>
                     </div>
                 </Card>
