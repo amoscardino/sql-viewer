@@ -8,17 +8,16 @@ const IconText = ({ iconClass, text, textBeforeIcon }) => {
     if (textBeforeIcon) {
         return (
             <>
-                {text} <i class={`bi ${className}`}></i>
+                {text} <i class={`bi ${className} ms-1`}></i>
             </>
         );
     }
-    else {
-        return (
-            <>
-                <i class={`bi ${className}`}></i> {text}
-            </>
-        );
-    }
+
+    return (
+        <>
+            <i class={`bi ${className} me-1`}></i> {text}
+        </>
+    );
 };
 
 export default IconText;

@@ -24,7 +24,8 @@ const CommandEditor = ({ runCommand }) => {
 
     return (
         <Card
-            title={<IconText iconClass="input-cursor-text" text="Command" />}
+            iconClass="input-cursor-text"
+            title="Command"
             useCardBody={true}
         >
             <Editor

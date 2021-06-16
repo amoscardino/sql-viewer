@@ -1,5 +1,4 @@
 import Card from './utils/Card';
-import IconText from './utils/IconText';
 
 const DatabaseSelector = ({ loadDatabase }) => {
     const handleFileChange = (e) => {
@@ -23,7 +22,8 @@ const DatabaseSelector = ({ loadDatabase }) => {
         <div className="row justify-content-center">
             <div className="col-xl-6 col-lg-8 col-md-9 my-5">
                 <Card
-                    title={<IconText iconClass="file-earmark-spreadsheet" text="Select a database" />}
+                    iconClass="file-earmark-spreadsheet"
+                    title="Select a database"
                     useCardBody={true}
                 >
                     <div className="row">

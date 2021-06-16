@@ -6,7 +6,7 @@ const Schema = ({ execCommand }) => {
     const { schema, reloadSchema } = useSchema(execCommand);
 
     return (
-        <Card title={<IconText iconClass="table" text="Tables" />}>
+        <Card iconClass="table" title="Tables">
             {!schema && (
                 <div className="card-body text-center text-muted fst-italic">
                     No tables. Why not add some?
